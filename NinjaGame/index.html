@@ -4,12 +4,24 @@
         <div id='character' style='position:absolute; top:100px; left:450px; background-image: url("img/down1.png"); width:59px; height:86px;'></div>
     </div>
     <script type="text/javascript">
-	    var leftValue = 450, topValue = 100;
+	    var leftValue = 450;
+		var topValue = 100;
+		var direction = "left";
+		var stepNumber = 1;
+
+		function walk()
+		{
+			if (stepNumber === 1)
+				stepNumber = 2;
+			else
+				stepNumber = 1;
+		}
 
     	function update()
 		{
     		document.getElementById("character").style.left = leftValue + "px";
     		document.getElementById("character").style.top = topValue + "px";
+			document.getElementById("character").style.backgroundImage = "url('img/" + direction + stepNumber + ".png";
     	}
 
     	document.onkeydown = function(e)
@@ -18,22 +30,62 @@
 
     		if(e.keyCode == 37) // LEFT
 			{
-				leftValue = (leftValue - 10 <= 0) ? 0 : leftValue - 10;
+				if (leftValue - 10 > 0)
+				{
+					leftValue -= 10;
+					direction = "left";
+					walk();
+				}
+				else
+				{
+					leftValue = 0;
+					direction = "left";
+				}
 			}
 
     		else if (e.keyCode == 39) // RIGHT
 			{ 
-    			leftValue = (leftValue + 10 >= 500) ? 500 : (leftValue + 10);		
+    			if (leftValue + 10 < 500)
+				{
+					leftValue += 10;
+					direction = "right";
+					walk();
+				}
+				else
+				{
+					leftValue = 500;
+					direction = "right";
+				}		
     		}
 
     		else if (e.keyCode == 40) // DOWN
 			{ 
-				topValue = (topValue + 10 >= 500) ? 500 : (topValue + 10);
+				if (topValue + 10 < 500)
+				{
+					topValue += 10;
+					direction = "down";
+					walk();
+				}
+				else
+				{
+					topValue = 500;
+					direction = "down";
+				}
     		}
 
     		else if (e.keyCode == 38) // UP
 			{
-				topValue = (topValue - 10 <= 0) ? 0 : (topValue - 10);
+				if (topValue - 10 > 0)
+				{
+					topValue -= 10;
+					direction = "top";
+					walk();
+				}
+				else
+				{
+					topValue = 0;
+					direction = "top";
+				}
 			}
 
     		update();
